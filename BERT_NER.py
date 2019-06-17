@@ -643,8 +643,9 @@ def main(_):
             seq_length=FLAGS.max_seq_length,
             is_training=False,
             drop_remainder=False)
-        result = estimator.evaluate(input_fn=eval_input_fn)
-        output_eval_file = os.path.join(FLAGS.output_dir, "eval_results.txt")
+        result = estimator.evaluate(input_fn=eval_input_fn, steps=len(eval_examples))
+        #output_eval_file = os.path.join(FLAGS.output_dir, "eval_results.txt")
+        output_eval_file = "eval_results.txt"
         with open(output_eval_file,"w") as wf:
             logging.info("***** Eval results *****")
             confusion_matrix = result["confusion_matrix"]
@@ -679,7 +680,8 @@ def main(_):
             drop_remainder=False)
 
         result = estimator.predict(input_fn=predict_input_fn)
-        output_predict_file = os.path.join(FLAGS.output_dir, "label_test.txt")
+        #output_predict_file = os.path.join(FLAGS.output_dir, "label_test.txt")
+        output_predict_file = "label_test.txt"
         #here if the tag is "X" means it belong to its before token, here for convenient evaluate use
         # conlleval.pl we  discarding it directly
         Writer(output_predict_file,result,batch_tokens,batch_labels,id2label)
